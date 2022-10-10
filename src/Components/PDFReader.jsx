@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import Controls from "./Controls";
 import FileInput from "./FileInput";
@@ -14,7 +14,6 @@ const PDFReader = () => {
   const [viewType, setViewType] = useState("Horizontal");
   const [pdf, setPdf] = useState(null);
   const handle = useFullScreenHandle();
-  const [pagesRef, setPagesRef] = useState([]);
 
   useEffect(() => {
     const div = document.getElementsByClassName("fullscreen")[0];
@@ -26,17 +25,8 @@ const PDFReader = () => {
     }
   }, [handle]);
 
-  useEffect(() => {
-    pagesRef[pageNumber - 1]?.current?.pageElement.current.scrollIntoView({});
-  }, [pageNumber, pagesRef]);
-
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
-    setPagesRef((elRefs) =>
-      Array(numPages)
-        .fill()
-        .map((_, i) => elRefs[i] || createRef())
-    );
   }
 
   const isLoading =
@@ -56,6 +46,7 @@ const PDFReader = () => {
               pageNumber={pageNumber}
               setPageNumber={setPageNumber}
               handle={handle}
+              viewType={viewType}
             />
             <div className="flex flex-col items-center">
               <Document
@@ -72,7 +63,6 @@ const PDFReader = () => {
                       renderTextLayer={false}
                       scale={scale}
                       className="my-2"
-                      ref={pagesRef[index]}
                     />
                   ))
                 ) : isLoading && renderedPageNumber && renderedScale ? (

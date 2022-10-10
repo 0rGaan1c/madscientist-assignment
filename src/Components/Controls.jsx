@@ -1,23 +1,34 @@
 import React from "react";
 
 const Controls = (props) => {
-  const { pageNumber, numPages, setPageNumber, scale, setScale, handle } =
-    props;
+  const {
+    pageNumber,
+    numPages,
+    setPageNumber,
+    scale,
+    setScale,
+    handle,
+    viewType,
+  } = props;
 
   const isFirstPage = pageNumber === 1;
   const isLastPage = pageNumber === numPages;
 
-  const firstPageClass = isFirstPage
-    ? "cursor-not-allowed text-gray-400"
-    : "cursor-pointer";
-  const lastPageClass = isLastPage
-    ? "cursor-not-allowed text-gray-400"
-    : "cursor-pointer";
+  const firstPageClass =
+    isFirstPage || viewType === "Vertical"
+      ? "cursor-not-allowed text-gray-400"
+      : "cursor-pointer";
+  const lastPageClass =
+    isLastPage || viewType === "Vertical"
+      ? "cursor-not-allowed text-gray-400"
+      : "cursor-pointer";
 
   const goToPreviousPage = () => {
+    if (viewType === "Vertical") return;
     if (!isFirstPage) setPageNumber(pageNumber - 1);
   };
   const goToNextPage = () => {
+    if (viewType === "Vertical") return;
     if (!isLastPage) setPageNumber(pageNumber + 1);
   };
   const onPageChange = (e) => {
@@ -61,6 +72,7 @@ const Controls = (props) => {
             className="p-0 pl-1 md:mx-2"
             value={pageNumber}
             onChange={onPageChange}
+            disabled={viewType === "Vertical"}
           />{" "}
           of {numPages}
         </span>
