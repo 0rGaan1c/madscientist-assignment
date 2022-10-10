@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useRef, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import Controls from "./Controls";
 import FileInput from "./FileInput";
@@ -64,7 +64,7 @@ const PDFReader = () => {
                 className="text-white"
               >
                 {viewType === "Vertical" ? (
-                  Array.from({ length: numPages }, (_, index) => (
+                  Array.from(new Array(numPages), (_, index) => (
                     <Page
                       key={`page_${index + 1}`}
                       pageNumber={index + 1}

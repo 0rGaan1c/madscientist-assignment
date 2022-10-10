@@ -22,6 +22,7 @@ const Controls = (props) => {
   };
   const onPageChange = (e) => {
     const { value } = e.target;
+    if (Number(value) > numPages) return;
     setPageNumber(Number(value));
   };
 
